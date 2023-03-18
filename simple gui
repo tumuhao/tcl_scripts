@@ -1,0 +1,57 @@
+write a gui with tcl, it has three input in the first three rows, three buttons in the forth row, a table in the fifth row,table has one column, 5 rows and scrollbar
+
+Here's a simple GUI using Tcl/Tk with the elements you described:
+
+```tcl
+package require Tk
+
+proc add_entry {} {
+    global entries_list
+    set value1 [$::entry1 get]
+    set value2 [$::entry2 get]
+    set value3 [$::entry3 get]
+    set combined_value "$value1 $value2 $value3"
+    $entries_list insert end $combined_value
+}
+
+proc clear_entries {} {
+    $::entry1 delete 0 end
+    $::entry2 delete 0 end
+    $::entry3 delete 0 end
+}
+
+proc clear_listbox {} {
+    global entries_list
+    $entries_list delete 0 end
+}
+
+# Create main window
+set main_win [toplevel .main]
+wm title $main_win "Simple GUI"
+
+# Create input fields
+entry $main_win.entry1
+entry $main_win.entry2
+entry $main_win.entry3
+grid $main_win.entry1 -row 0 -column 0 -padx 5 -pady 5
+grid $main_win.entry2 -row 1 -column 0 -padx 5 -pady 5
+grid $main_win.entry3 -row 2 -column 0 -padx 5 -pady 5
+
+# Create buttons
+button $main_win.add_btn -text "Add" -command add_entry
+button $main_win.clear_entries_btn -text "Clear Entries" -command clear_entries
+button $main_win.clear_list_btn -text "Clear List" -command clear_listbox
+grid $main_win.add_btn -row 3 -column 0 -padx 5 -pady 5
+grid $main_win.clear_entries_btn -row 3 -column 1 -padx 5 -pady 5
+grid $main_win.clear_list_btn -row 3 -column 2 -padx 5 -pady 5
+
+# Create table (Listbox) with scrollbar
+set entries_list [listbox $main_win.entries_list -height 5 -yscrollcommand [scrollbar $main_win.scroll -orient vertical -command [$main_win.entries_list yview]] set]
+grid $main_win.entries_list -row 4 -column 0 -padx 5 -pady 5
+grid $main_win.scroll -row 4 -column 1 -sticky ns -padx 5 -pady 5
+
+# Start the main event loop
+vwait forever
+```
+
+This script creates a simple GUI with three input fields, three buttons, and a table (Listbox) with a scrollbar. The "Add" button adds the values from the input fields to the table, the "Clear Entries" button clears the input fields, and the "Clear List" button clears the table
